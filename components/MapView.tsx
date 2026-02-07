@@ -1,6 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import L from "leaflet";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { MOCK_USERS } from "../constants";
 import { UserRole } from "../types";
 
@@ -27,7 +28,30 @@ const userLocationIcon = L.icon({
   popupAnchor: [0, -48]
 });
 
+// Custom popup component for volunteers
+const VolunteerPopup = ({ user }: { user: any }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="text-center min-w-[200px]">
+      <strong className="text-sm">{user.name}</strong>
+      <br />
+      <span className="text-xs text-slate-600">{user.role}</span>
+      <br />
+      <div className="mt-2 pt-2 border-t border-slate-200">
+        <button
+          onClick={() => navigate(`/volunteers/${user.id}`)}
+          className="text-xs bg-brand text-white px-3 py-1 rounded hover:bg-brand-dark transition-colors font-bold w-full mt-2"
+        >
+          View Profile
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export default function MapView({ onUserSelect }) {
+  const navigate = useNavigate();
   const [center, setCenter] = useState<[number, number]>([51.5072, -0.1276]); // UK default
   const [proximityRadius, setProximityRadius] = useState(2); // km
   const [showAll, setShowAll] = useState(false);
@@ -119,11 +143,7 @@ export default function MapView({ onUserSelect }) {
             }}
           >
             <Popup>
-              <div className="text-center">
-                <strong>{user.name}</strong>
-                <br />
-                <span className="text-xs text-slate-600">Volunteer</span>
-              </div>
+              <VolunteerPopup user={user} />
             </Popup>
           </Marker>
         ))}
