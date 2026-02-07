@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { OctopusLogo, MOCK_USERS } from '../constants';
 import { UserProfile, UserRole } from '../types';
@@ -11,17 +11,43 @@ interface SignupPageProps {
 const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
   const navigate = useNavigate();
   const [role, setRole] = useState<UserRole>(UserRole.VOLUNTEER);
+  const [location, setLocation] = useState<{ lat: number; lng: number }>({ lat: 40.7128, lng: -74.0060 });
+  const [locationLoading, setLocationLoading] = useState(true);
+  const [locationError, setLocationError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Request user's current location on component mount
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+          setLocationLoading(false);
+        },
+        (error) => {
+          console.warn('Geolocation error:', error);
+          setLocationError('Could not retrieve location. Using default location.');
+          setLocationLoading(false);
+        }
+      );
+    } else {
+      setLocationError('Geolocation is not supported by your browser.');
+      setLocationLoading(false);
+    }
+  }, []);
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate signup by creating a user object
+    // Create a user object with their current location
     const newUser: UserProfile = {
       id: Date.now().toString(),
       name: 'New Human',
       role: role,
       email: 'new@8vents.com',
       avatar: 'https://picsum.photos/seed/new/200',
-      location: { lat: 40.7128, lng: -74.0060 },
+      location: location,
       skills: ['Newbie'],
       eventsHelped: 0,
       totalDonatedTime: 0,
@@ -46,6 +72,30 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
         </div>
 
         <form className="mt-10 space-y-8" onSubmit={handleSignup}>
+          {/* Location Status */}
+          <div className={`p-4 rounded-xl flex items-center gap-3 ${
+            locationError 
+              ? 'bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800' 
+              : 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800'
+          }`}>
+            {locationLoading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-brand border-t-transparent rounded-full animate-spin"></div>
+                <span className="text-sm font-bold text-slate-600 dark:text-slate-300">Detecting your location...</span>
+              </>
+            ) : locationError ? (
+              <>
+                <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4v2m0 4v2m0-14a9 9 0 100 18 9 9 0 000-18z" /></svg>
+                <span className="text-sm font-bold text-amber-700 dark:text-amber-200">{locationError}</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m11-5a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span className="text-sm font-bold text-green-700 dark:text-green-200">Location detected: {location.lat.toFixed(4)}, {location.lng.toFixed(4)}</span>
+              </>
+            )}
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <button
               type="button"
