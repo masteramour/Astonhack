@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { HashRouter, Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import { OctopusLogo, MOCK_USERS } from './constants';
 import LoadingScreen from './components/LoadingScreen';
 import Chatbot from './components/Chatbot';
@@ -13,8 +12,17 @@ import BlogPage from './pages/BlogPage';
 import ProfilePage from './pages/ProfilePage';
 import EventDetailPage from './pages/EventDetailPage';
 import VolunteerDetailPage from './pages/VolunteerDetailPage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import { UserProfile } from './types';
 
-const Layout: React.FC<{ children: React.ReactNode, darkMode: boolean, toggleDarkMode: () => void }> = ({ children, darkMode, toggleDarkMode }) => {
+const Layout: React.FC<{ 
+  children: React.ReactNode, 
+  darkMode: boolean, 
+  toggleDarkMode: () => void,
+  currentUser: UserProfile | null,
+  setCurrentUser: (user: UserProfile | null) => void
+}> = ({ children, darkMode, toggleDarkMode, currentUser, setCurrentUser }) => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -65,9 +73,26 @@ const Layout: React.FC<{ children: React.ReactNode, darkMode: boolean, toggleDar
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
                 )}
               </button>
-              <Link to="/profile/2" className="hidden sm:block">
-                <img src={MOCK_USERS[1].avatar} className="w-8 h-8 rounded-full border-2 border-brand" alt="Profile" />
-              </Link>
+              
+              {currentUser ? (
+                <div className="flex items-center gap-3">
+                  <Link to={`/profile/${currentUser.id}`} className="hidden sm:block">
+                    <img src={currentUser.avatar} className="w-8 h-8 rounded-full border-2 border-brand" alt="Profile" />
+                  </Link>
+                  <button 
+                    onClick={() => setCurrentUser(null)}
+                    className="text-xs font-bold text-slate-400 hover:text-brand transition-colors"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Link to="/login" className="text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-brand px-3 py-2">Login</Link>
+                  <Link to="/signup" className="bg-brand text-white text-sm font-bold px-4 py-2 rounded-xl hover:bg-brand-dark transition-all">Join</Link>
+                </div>
+              )}
+
               <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" /></svg>
               </button>
@@ -104,6 +129,7 @@ const Layout: React.FC<{ children: React.ReactNode, darkMode: boolean, toggleDar
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2500);
@@ -116,7 +142,12 @@ const App: React.FC = () => {
 
   return (
     <HashRouter>
-      <Layout darkMode={darkMode} toggleDarkMode={toggleDarkMode}>
+      <Layout 
+        darkMode={darkMode} 
+        toggleDarkMode={toggleDarkMode} 
+        currentUser={currentUser} 
+        setCurrentUser={setCurrentUser}
+      >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<EventsPage />} />
@@ -127,6 +158,8 @@ const App: React.FC = () => {
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/profile/:id" element={<ProfilePage />} />
+          <Route path="/login" element={<LoginPage onLogin={setCurrentUser} />} />
+          <Route path="/signup" element={<SignupPage onSignup={setCurrentUser} />} />
         </Routes>
       </Layout>
     </HashRouter>
