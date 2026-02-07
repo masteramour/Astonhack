@@ -5,11 +5,84 @@ import { OctopusLogo } from '../constants';
 const DonatePage: React.FC = () => {
   const [donationType, setDonationType] = useState<'time' | 'item'>('item');
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    category: 'Food & Groceries',
+    description: ''
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleDonationTypeChange = (type: 'time' | 'item') => {
+    setDonationType(type);
+    // Reset category based on donation type
+    setFormData(prev => ({
+      ...prev,
+      category: type === 'item' ? 'Food & Groceries' : 'Administrative Work'
+    }));
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
+    setLoading(true);
+    setError('');
+
+    console.log('Submitting form...');
+    console.log('Form data:', formData);
+    console.log('Donation type:', donationType);
+
+    try {
+      const donationData = {
+        fullName: formData.fullName,
+        email: formData.email,
+        category: formData.category,
+        description: formData.description,
+        donationType: donationType,
+        submittedAt: new Date().toISOString()
+      };
+
+      console.log('Sending to server:', donationData);
+
+      const response = await fetch('http://localhost:3001/api/donate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(donationData)
+      });
+
+      console.log('Response status:', response.status);
+      
+      const data = await response.json();
+      console.log('Response data:', data);
+
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({
+          fullName: '',
+          email: '',
+          category: donationType === 'item' ? 'Food & Groceries' : 'Administrative Work',
+          description: ''
+        });
+        setTimeout(() => setSubmitted(false), 3000);
+      } else {
+        setError(data.message || 'Error submitting donation. Please try again.');
+      }
+    } catch (error: any) {
+      console.error('Full error:', error);
+      setError(`Connection error: ${error.message}. Make sure the server is running on port 3001.`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -21,7 +94,7 @@ const DonatePage: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <button 
-          onClick={() => setDonationType('item')}
+          onClick={() => handleDonationTypeChange('item')}
           className={`p-8 rounded-[2rem] border-4 transition-all flex flex-col items-center gap-4 ${
             donationType === 'item' 
               ? 'border-brand bg-brand/5 shadow-xl scale-105' 
@@ -38,7 +111,7 @@ const DonatePage: React.FC = () => {
         </button>
 
         <button 
-          onClick={() => setDonationType('time')}
+          onClick={() => handleDonationTypeChange('time')}
           className={`p-8 rounded-[2rem] border-4 transition-all flex flex-col items-center gap-4 ${
             donationType === 'time' 
               ? 'border-brand bg-brand/5 shadow-xl scale-105' 
@@ -66,14 +139,35 @@ const DonatePage: React.FC = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="p-4 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-800 dark:text-red-200 rounded-2xl">
+                {error}
+              </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-bold text-slate-500">Full Name</label>
-                <input type="text" className="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-700 border-none focus:ring-2 focus:ring-brand" placeholder="John Octopus" required />
+                <input 
+                  type="text" 
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  className="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-700 border-none focus:ring-2 focus:ring-brand" 
+                  placeholder="John Octopus" 
+                  required 
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-bold text-slate-500">Email Address</label>
-                <input type="email" className="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-700 border-none focus:ring-2 focus:ring-brand" placeholder="john@ink.com" required />
+                <input 
+                  type="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-700 border-none focus:ring-2 focus:ring-brand" 
+                  placeholder="john@ink.com" 
+                  required 
+                />
               </div>
             </div>
 
@@ -81,7 +175,12 @@ const DonatePage: React.FC = () => {
               <label className="text-sm font-bold text-slate-500">
                 {donationType === 'item' ? 'Item Category' : 'Service/Skill'}
               </label>
-              <select className="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-700 border-none focus:ring-2 focus:ring-brand">
+              <select 
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+                className="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-700 border-none focus:ring-2 focus:ring-brand"
+              >
                 {donationType === 'item' ? (
                   <>
                     <option>Food & Groceries</option>
@@ -107,14 +206,21 @@ const DonatePage: React.FC = () => {
                 {donationType === 'item' ? 'Description of items' : 'Hours Available'}
               </label>
               <textarea 
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
                 className="w-full p-4 rounded-2xl bg-slate-100 dark:bg-slate-700 border-none focus:ring-2 focus:ring-brand h-32"
                 placeholder={donationType === 'item' ? "Tell us about the items you're giving..." : "How many hours can you commit to this task?"}
                 required
               ></textarea>
             </div>
 
-            <button className="w-full py-5 bg-brand text-white text-xl font-black rounded-3xl shadow-xl shadow-brand/20 hover:bg-brand-dark transition-all transform hover:scale-[1.02] active:scale-95">
-              Confirm Donation
+            <button 
+              type="submit"
+              disabled={loading}
+              className="w-full py-5 bg-brand text-white text-xl font-black rounded-3xl shadow-xl shadow-brand/20 hover:bg-brand-dark transition-all transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Submitting...' : 'Confirm Donation'}
             </button>
           </form>
         )}
