@@ -4,6 +4,42 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MOCK_USERS } from "../constants";
 import { UserRole } from "../types";
+import populationsData from "../populations.json";
+
+// Mapping of location names to coordinates (global)
+const LOCATION_COORDINATES: Record<string, [number, number]> = {
+  "New York City": [40.7128, -74.0060],
+  "Los Angeles": [34.0522, -118.2437],
+  "Chicago": [41.8781, -87.6298],
+  "San Francisco": [37.7749, -122.4194],
+  "Toronto": [43.6629, -79.3957],
+  "Mexico City": [19.4326, -99.1332],
+  "São Paulo": [-23.5505, -46.6333],
+  "Buenos Aires": [-34.6037, -58.3816],
+  "Lima": [-12.0464, -77.0428],
+  "London": [51.5074, -0.1278],
+  "Paris": [48.8566, 2.3522],
+  "Berlin": [52.5200, 13.4050],
+  "Amsterdam": [52.3676, 4.9041],
+  "Madrid": [40.4168, -3.7038],
+  "Rome": [41.9028, 12.4964],
+  "Cairo": [30.0444, 31.2357],
+  "Lagos": [6.5244, 3.3792],
+  "Cape Town": [-33.9249, 18.4241],
+  "Dubai": [25.2048, 55.2708],
+  "Istanbul": [41.0082, 28.9784],
+  "Tel Aviv": [32.0853, 34.7818],
+  "Tokyo": [35.6762, 139.6503],
+  "Seoul": [37.5665, 126.9780],
+  "Beijing": [39.9042, 116.4074],
+  "Shanghai": [31.2304, 121.4737],
+  "Mumbai": [19.0760, 72.8777],
+  "Bangkok": [13.7563, 100.5018],
+  "Singapore": [1.3521, 103.8198],
+  "Hong Kong": [22.3193, 114.1694],
+  "Sydney": [-33.8688, 151.2093],
+  "Auckland": [-37.7870, 174.7865]
+};
 
 // Function to calculate distance between two coordinates (in km)
 const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
@@ -35,6 +71,22 @@ const volunteerLocationIcon = L.icon({
   iconAnchor: [16, 48],
   popupAnchor: [0, -48]
 });
+
+// Custom popup component for populations
+const PopulationPopup = ({ location, data }: { location: string; data: any }) => {
+  return (
+    <div className="text-center min-w-[250px]">
+      <strong className="text-sm block mb-2">{location}</strong>
+      <div className="text-xs space-y-1 text-left">
+        <div><span className="font-bold">Events:</span> {data.totalEvents}</div>
+        <div><span className="font-bold">Total Participants:</span> {data.totalParticipants}</div>
+        <div><span className="font-bold">Avg per Event:</span> {data.averageParticipantsPerEvent.toFixed(1)}</div>
+        <div><span className="font-bold">Volunteers Needed:</span> {data.volunteerDemand}</div>
+        <div><span className="font-bold">Success Rate:</span> {(data.successRate * 100).toFixed(1)}%</div>
+      </div>
+    </div>
+  );
+};
 
 // Custom popup component for volunteers
 const VolunteerPopup = ({ user }: { user: any }) => {
@@ -155,6 +207,32 @@ export default function MapView({ onUserSelect }) {
           radius={proximityRadius * 1000} // Convert km to meters
           pathOptions={{ color: "brand", fillOpacity: 0.1, weight: 2 }}
         />
+
+        {/* Population data circles and markers */}
+        {populationsData.locations.map((location) => {
+          const coords = LOCATION_COORDINATES[location.location];
+          if (!coords) return null;
+          
+          // Radius scales with volunteer demand (25 meters per volunteer needed)
+          const radiusMeters = Math.max(200, location.volunteerDemand * 25);
+          // Color based on success rate
+          const successColor = location.successRate > 0.9 ? '#22c55e' : location.successRate > 0.85 ? '#3b82f6' : '#f59e0b';
+          
+          return (
+            <g key={location.location}>
+              <Circle
+                center={coords}
+                radius={radiusMeters}
+                pathOptions={{ color: successColor, fillOpacity: 0.15, weight: 2, dashArray: '5, 5' }}
+              />
+              <Marker position={coords} icon={L.icon({ iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCIgZmlsbD0iIzMzNzhkYyIgb3BhY2l0eT0iMC44Ii8+PC9zdmc+', iconSize: [24, 24], iconAnchor: [12, 12], popupAnchor: [0, 0] })}>
+                <Popup>
+                  <PopulationPopup location={location.location} data={location} />
+                </Popup>
+              </Marker>
+            </g>
+          );
+        })}
 
         {/* User's current location marker */}
         <Marker
