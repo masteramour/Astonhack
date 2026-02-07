@@ -129,7 +129,58 @@ const Layout: React.FC<{
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
-  const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
+  const [currentUserState, setCurrentUserState] = useState<UserProfile | null>(() => {
+    try {
+      const raw = localStorage.getItem('currentUser');
+      return raw ? JSON.parse(raw) as UserProfile : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const setCurrentUser = (user: UserProfile | null) => {
+    // sanitize skills by removing any lingering 'Newbie' tag
+    const sanitize = (u: UserProfile) => ({
+      ...u,
+      skills: (u.skills || []).filter(s => s.toLowerCase() !== 'newbie')
+    });
+
+    const cleaned = user ? sanitize(user) : null;
+    setCurrentUserState(cleaned);
+    try {
+      if (cleaned) localStorage.setItem('currentUser', JSON.stringify(cleaned));
+      else localStorage.removeItem('currentUser');
+    } catch (e) {
+      console.error('Failed to persist currentUser', e);
+    }
+  };
+
+  // On app load, sanitize persisted users list and currentUser to remove 'Newbie'
+  useEffect(() => {
+    try {
+      const rawUsers = localStorage.getItem('users');
+      if (rawUsers) {
+        const parsed = JSON.parse(rawUsers) as UserProfile[];
+        const cleaned = parsed.map(u => ({ ...u, skills: (u.skills || []).filter(s => s.toLowerCase() !== 'newbie') }));
+        // only write back if something changed
+        if (JSON.stringify(cleaned) !== rawUsers) {
+          localStorage.setItem('users', JSON.stringify(cleaned));
+        }
+      }
+
+      const rawCurrent = localStorage.getItem('currentUser');
+      if (rawCurrent) {
+        const parsedCurr = JSON.parse(rawCurrent) as UserProfile;
+        const cleanedCurr = { ...parsedCurr, skills: (parsedCurr.skills || []).filter(s => s.toLowerCase() !== 'newbie') };
+        if (JSON.stringify(cleanedCurr) !== rawCurrent) {
+          localStorage.setItem('currentUser', JSON.stringify(cleanedCurr));
+          setCurrentUserState(cleanedCurr);
+        }
+      }
+    } catch (err) {
+      console.error('Sanitize localStorage failed', err);
+    }
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2500);
@@ -145,7 +196,7 @@ const App: React.FC = () => {
       <Layout 
         darkMode={darkMode} 
         toggleDarkMode={toggleDarkMode} 
-        currentUser={currentUser} 
+        currentUser={currentUserState} 
         setCurrentUser={setCurrentUser}
       >
         <Routes>
@@ -157,7 +208,7 @@ const App: React.FC = () => {
           <Route path="/donate" element={<DonatePage />} />
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/blog" element={<BlogPage />} />
-          <Route path="/profile/:id" element={<ProfilePage />} />
+          <Route path="/profile/:id" element={<ProfilePage currentUser={currentUserState} setCurrentUser={setCurrentUser} />} />
           <Route path="/login" element={<LoginPage onLogin={setCurrentUser} />} />
           <Route path="/signup" element={<SignupPage onSignup={setCurrentUser} />} />
         </Routes>

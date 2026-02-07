@@ -1,14 +1,20 @@
 
 import React from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import VolunteerDetailPage from './VolunteerDetailPage';
+import { UserProfile } from '../types';
 
-const ProfilePage: React.FC = () => {
+const ProfilePage: React.FC<{
+  currentUser: UserProfile | null,
+  setCurrentUser: (user: UserProfile | null) => void
+}> = ({ currentUser, setCurrentUser }) => {
   const { id } = useParams();
-  
-  // For demo purposes, we just reuse the VolunteerDetailPage
-  // In a real app, this would have edit functionality.
-  return <VolunteerDetailPage />;
+
+  // If the requested id matches the current logged-in user, pass the user directly
+  // otherwise VolunteerDetailPage will look up the user from MOCK_USERS
+  const overrideUser = id && currentUser && id === currentUser.id ? currentUser : undefined;
+
+  return <VolunteerDetailPage overrideUser={overrideUser} setCurrentUser={setCurrentUser} />;
 };
 
 export default ProfilePage;

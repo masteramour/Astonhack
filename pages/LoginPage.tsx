@@ -15,10 +15,21 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login by picking a mock user (James Tentacle)
-    const user = MOCK_USERS[1]; 
-    onLogin(user);
-    navigate('/');
+    // Lookup user by email from mock list + persisted users
+    try {
+      const persisted = JSON.parse(localStorage.getItem('users') || '[]');
+      const allUsers = [...MOCK_USERS, ...persisted];
+      const user = allUsers.find(u => u.email?.toLowerCase() === email.toLowerCase());
+      if (!user) {
+        alert('No user found with that email. Try signing up first.');
+        return;
+      }
+      onLogin(user);
+      navigate('/');
+    } catch (err) {
+      console.error('Login error:', err);
+      alert('Login failed.');
+    }
   };
 
   return (

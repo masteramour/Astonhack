@@ -14,6 +14,9 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
   const [location, setLocation] = useState<{ lat: number; lng: number }>({ lat: 40.7128, lng: -74.0060 });
   const [locationLoading, setLocationLoading] = useState(true);
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
 
   useEffect(() => {
     // Request user's current location on component mount
@@ -40,22 +43,31 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    // Create a user object with their current location
+    // Create a user object using form inputs and their current location
     const newUser: UserProfile = {
       id: Date.now().toString(),
-      name: 'New Human',
+      name: name || 'New Human',
       role: role,
-      email: 'new@8vents.com',
-      avatar: 'https://picsum.photos/seed/new/200',
+      email: email || 'new@8vents.com',
+      avatar: `https://picsum.photos/seed/${encodeURIComponent(name || 'new')}/200`,
       location: location,
-      skills: ['Newbie'],
+      skills: [],
       eventsHelped: 0,
       totalDonatedTime: 0,
       totalDonatedItems: 0,
       bio: 'Just joined the 8vents community!'
     };
     onSignup(newUser);
-    navigate('/');
+    // persist new user in localStorage so they can login later
+    try {
+      const stored = JSON.parse(localStorage.getItem('users') || '[]');
+      stored.push(newUser);
+      localStorage.setItem('users', JSON.stringify(stored));
+    } catch (err) {
+      console.error('Failed to persist new user', err);
+    }
+    // navigate directly to the new user's profile
+    navigate(`/profile/${newUser.id}`);
   };
 
   return (
@@ -124,12 +136,14 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Full Name</label>
               <input
                 type="text"
                 required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="block w-full px-5 py-4 border-none bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand sm:text-sm"
                 placeholder="Bubbles McGee"
               />
@@ -139,6 +153,8 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
               <input
                 type="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="block w-full px-5 py-4 border-none bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand sm:text-sm"
                 placeholder="bubbles@sea.com"
               />
@@ -150,6 +166,8 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
             <input
               type="password"
               required
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value)}
               className="block w-full px-5 py-4 border-none bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand sm:text-sm"
               placeholder="••••••••"
             />
