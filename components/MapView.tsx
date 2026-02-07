@@ -28,6 +28,14 @@ const userLocationIcon = L.icon({
   popupAnchor: [0, -48]
 });
 
+// Create custom red icon for volunteer locations
+const volunteerLocationIcon = L.icon({
+  iconUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCAzMiA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTYgMEMxMi4wODU4IDAgOC40MzY2NyAyLjEwNzE3IDUuNzg5MzcgNS43ODkzN0MzLjEwNzE3IDguNDM2NjcgMSAxMi4wODU4IDEgMTZDMSAyNC44Mjg0IDE2IDQ4IDE2IDQ4UzMxIDI0LjgyODQgMzEgMTZDMzEgMTIuMDg1OCAyOC44OTI4IDguNDM2NjcgMjYuMjEwNiA1Ljc4OTM3QzIzLjU2MzMgMi4xMDcxNyAxOS45MTQyIDAgMTYgMFpNMTYgMjJDMTMuNzkwOSAyMiAxMiAyMC4yMDkxIDEyIDE4QzEyIDE1Ljc5MDkgMTMuNzkwOSAxNCAxNiAxNEMxOC4yMDkxIDE0IDIwIDE1Ljc5MDkgMjAgMThDMjAgMjAuMjA5MSAxOC4yMDkxIDIyIDE2IDIyWiIgZmlsbD0iI2VmNDQ0NCIvPjwvc3ZnPg==',
+  iconSize: [32, 48],
+  iconAnchor: [16, 48],
+  popupAnchor: [0, -48]
+});
+
 // Custom popup component for volunteers
 const VolunteerPopup = ({ user }: { user: any }) => {
   const navigate = useNavigate();
@@ -52,22 +60,51 @@ const VolunteerPopup = ({ user }: { user: any }) => {
 
 export default function MapView({ onUserSelect }) {
   const navigate = useNavigate();
-  const [center, setCenter] = useState<[number, number]>([51.5072, -0.1276]); // UK default
+  const [center, setCenter] = useState<[number, number] | null>(null);
   const [proximityRadius, setProximityRadius] = useState(2); // km
   const [showAll, setShowAll] = useState(false);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(true);
 
   useEffect(() => {
-    navigator.geolocation?.getCurrentPosition((pos) => {
-      setCenter([pos.coords.latitude, pos.coords.longitude]);
-    });
+    // Request user's geolocation
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setCenter([pos.coords.latitude, pos.coords.longitude]);
+          setIsLoadingLocation(false);
+        },
+        (error) => {
+          // Fallback to Birmingham if geolocation fails or is denied
+          console.warn('Geolocation error:', error);
+          setCenter([52.5086, -1.8753]); // Birmingham center
+          setIsLoadingLocation(false);
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
+    } else {
+      // Browser doesn't support geolocation
+      setCenter([52.5086, -1.8753]); // Birmingham center
+      setIsLoadingLocation(false);
+    }
   }, []);
 
   // Filter volunteers based on proximity
-  const nearbyVolunteers = MOCK_USERS.filter((user) => {
+  const nearbyVolunteers = center ? MOCK_USERS.filter((user) => {
     if (showAll) return user.role === UserRole.VOLUNTEER;
     const distance = calculateDistance(center[0], center[1], user.location.lat, user.location.lng);
     return user.role === UserRole.VOLUNTEER && distance <= proximityRadius;
-  });
+  }) : [];
+
+  if (!center) {
+    return (
+      <div className="h-[600px] bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-brand border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-slate-600 dark:text-slate-400 font-bold">Detecting your location...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -138,6 +175,7 @@ export default function MapView({ onUserSelect }) {
           <Marker
             key={user.id}
             position={[user.location.lat, user.location.lng]}
+            icon={volunteerLocationIcon}
             eventHandlers={{
               click: () => onUserSelect(user),
             }}

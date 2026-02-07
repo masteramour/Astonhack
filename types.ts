@@ -10,6 +10,7 @@ export interface UserProfile {
   name: string;
   role: UserRole;
   email: string;
+  phone: string;
   avatar: string;
   location: {
     lat: number;
