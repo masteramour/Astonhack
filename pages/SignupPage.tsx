@@ -210,13 +210,6 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
             />
           </div>
 
-          <div className="flex items-center">
-            <input id="terms" name="terms" type="checkbox" required className="h-4 w-4 text-brand focus:ring-brand border-slate-300 rounded-lg" />
-            <label htmlFor="terms" className="ml-2 block text-xs font-bold text-slate-500">
-              I agree to the <a href="#" className="text-brand hover:underline">Community Guidelines</a>
-            </label>
-          </div>
-
           <button
             type="submit"
             className="w-full flex justify-center py-5 px-4 text-lg font-black rounded-3xl text-white bg-brand hover:bg-brand-dark shadow-2xl shadow-brand/30 transition-all active:scale-95"

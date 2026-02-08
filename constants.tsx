@@ -215,6 +215,102 @@ export const MOCK_EVENTS: Event[] = [
     volunteersJoined: ['4'],
     image: 'https://picsum.photos/seed/toy/800/400',
     tags: ['Holiday', 'Creative']
+  },
+  {
+    id: 'e4',
+    title: 'Summer Park Renovation',
+    description: 'Join us as we renovate and beautify the local park! Tasks include painting benches, planting flowers, and building new garden beds.',
+    managerId: '1',
+    date: '2026-06-08',
+    location: 'Riverside Park',
+    volunteersNeeded: 25,
+    volunteersJoined: ['2', '6'],
+    image: 'https://picsum.photos/seed/park/800/400',
+    tags: ['Community', 'Outdoors', 'Beautification']
+  },
+  {
+    id: 'e5',
+    title: 'Youth Mentorship Program Launch',
+    description: 'Help launch our new mentorship program connecting experienced professionals with local youth. Training provided for all mentors.',
+    managerId: '1',
+    date: '2026-06-15',
+    location: 'Central Community Center',
+    volunteersNeeded: 15,
+    volunteersJoined: ['5'],
+    image: 'https://picsum.photos/seed/mentor/800/400',
+    tags: ['Education', 'Youth', 'Social Service']
+  },
+  {
+    id: 'e6',
+    title: 'Community Garden Setup',
+    description: 'Build and plant a new community garden for local residents. No experience necessary - we\'ll teach you everything!',
+    managerId: '1',
+    date: '2026-06-22',
+    location: 'Downtown Green Space',
+    volunteersNeeded: 18,
+    volunteersJoined: ['2'],
+    image: 'https://picsum.photos/seed/garden/800/400',
+    tags: ['Environment', 'Agriculture', 'Community']
+  },
+  {
+    id: 'e7',
+    title: 'Tech Skills Workshop',
+    description: 'Free workshop teaching basic computer skills, coding fundamentals, and digital literacy to community members of all ages.',
+    managerId: '1',
+    date: '2026-07-01',
+    location: 'Public Library Tech Lab',
+    volunteersNeeded: 12,
+    volunteersJoined: ['6'],
+    image: 'https://picsum.photos/seed/tech/800/400',
+    tags: ['Education', 'Technology']
+  },
+  {
+    id: 'e8',
+    title: 'Senior Care Support Day',
+    description: 'Spend time with seniors at our local care facilities. Activities include games, conversation, and companionship.',
+    managerId: '1',
+    date: '2026-07-08',
+    location: 'Sunset Care Home',
+    volunteersNeeded: 20,
+    volunteersJoined: ['5'],
+    image: 'https://picsum.photos/seed/seniors/800/400',
+    tags: ['Social Service', 'Community', 'Elderly Care']
+  },
+  {
+    id: 'e9',
+    title: 'Animal Shelter Support Initiative',
+    description: 'Help care for animals at our local shelter. Tasks include feeding, cleaning, walking dogs, and socializing cats.',
+    managerId: '1',
+    date: '2026-07-15',
+    location: 'Happy Paws Animal Shelter',
+    volunteersNeeded: 16,
+    volunteersJoined: ['2', '6'],
+    image: 'https://picsum.photos/seed/animals/800/400',
+    tags: ['Animal Care', 'Charity']
+  },
+  {
+    id: 'e10',
+    title: 'Neighborhood Street Fair',
+    description: 'Help organize and run a fun street fair featuring local businesses, food vendors, games, and live music. Great community event!',
+    managerId: '1',
+    date: '2026-07-22',
+    location: 'Main Street Downtown',
+    volunteersNeeded: 30,
+    volunteersJoined: ['2', '5'],
+    image: 'https://picsum.photos/seed/fair/800/400',
+    tags: ['Community', 'Events', 'Entertainment']
+  },
+  {
+    id: 'e11',
+    title: 'Environmental Education Camp',
+    description: 'Multi-day camp teaching children about ecology, sustainability, and environmental conservation through hands-on activities.',
+    managerId: '1',
+    date: '2026-08-01',
+    location: 'Forest Educational Center',
+    volunteersNeeded: 22,
+    volunteersJoined: ['6'],
+    image: 'https://picsum.photos/seed/forest/800/400',
+    tags: ['Environment', 'Education', 'Youth']
   }
 ];
 

@@ -149,47 +149,6 @@ export const getEvents = (): Event[] => {
 };
 
 /**
- * Get a single event by ID
- */
-export const getEventById = (eventId: string): Event | undefined => {
-  const data = loadAllData();
-  return data.events.find(e => e.id === eventId);
-};
-
-/**
- * Add a user to an event's volunteers list
- */
-export const addUserToEvent = (eventId: string, userId: string): Event | null => {
-  const data = loadAllData();
-  const event = data.events.find(e => e.id === eventId);
-  
-  if (!event) return null;
-  
-  // Only add if not already in the list
-  if (!event.volunteersJoined.includes(userId)) {
-    event.volunteersJoined.push(userId);
-    saveAllData(data);
-  }
-  
-  return event;
-};
-
-/**
- * Remove a user from an event's volunteers list
- */
-export const removeUserFromEvent = (eventId: string, userId: string): Event | null => {
-  const data = loadAllData();
-  const event = data.events.find(e => e.id === eventId);
-  
-  if (!event) return null;
-  
-  event.volunteersJoined = event.volunteersJoined.filter(id => id !== userId);
-  saveAllData(data);
-  
-  return event;
-};
-
-/**
  * Get total donated time by user
  */
 export const getTotalDonatedTime = (userId: string): number => {
@@ -352,9 +311,6 @@ export default {
   getVolunteers,
   addEvent,
   getEvents,
-  getEventById,
-  addUserToEvent,
-  removeUserFromEvent,
   getTotalDonatedTime,
   getTotalDonatedItems,
   exportDataAsJSON,

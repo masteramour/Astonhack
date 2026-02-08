@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { MOCK_USERS } from '../constants';
 
 const LeaderboardPage: React.FC = () => {
@@ -66,7 +65,7 @@ const LeaderboardPage: React.FC = () => {
         <h2 className="text-3xl font-black">Want to see your name here?</h2>
         <p className="text-slate-400 max-w-lg mx-auto">Every small act of kindness counts. Start by joining an event or making a small donation today.</p>
         <div className="flex justify-center gap-4">
-          <Link to="/donate" className="bg-brand text-white px-8 py-4 rounded-2xl font-bold hover:bg-brand-dark transition-all">Get Started</Link>
+          <button className="bg-brand text-white px-8 py-4 rounded-2xl font-bold hover:bg-brand-dark transition-all">Get Started</button>
         </div>
       </div>
     </div>
