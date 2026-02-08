@@ -1,14 +1,30 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MOCK_EVENTS, MOCK_USERS } from '../constants';
+import { addUserToEvent, removeUserFromEvent } from '../services/dataService';
 
 const EventDetailPage: React.FC = () => {
   const { id } = useParams();
-  const event = MOCK_EVENTS.find(e => e.id === id);
+  const [event, setEvent] = useState(MOCK_EVENTS.find(e => e.id === id));
+  const [joinedEvent, setJoinedEvent] = useState(false);
   const manager = MOCK_USERS.find(u => u.id === event?.managerId);
 
   if (!event) return <div className="p-20 text-center">Event not found.</div>;
+
+  const handleJoinEvent = () => {
+    // Get the current logged-in user ID from localStorage or session
+    // For now, we'll use a demo user ID - in production, this would come from auth state
+    const currentUserId = localStorage.getItem('currentUserId') || '2'; // Default to James Tentacle for demo
+    
+    const updatedEvent = addUserToEvent(event.id, currentUserId);
+    if (updatedEvent) {
+      setEvent(updatedEvent);
+      setJoinedEvent(true);
+    }
+  };
+
+  const isUserInEvent = event.volunteersJoined.some(vId => vId === (localStorage.getItem('currentUserId') || '2'));
 
   return (
     <div className="max-w-5xl mx-auto space-y-12 animate-in fade-in duration-500">
@@ -62,8 +78,16 @@ const EventDetailPage: React.FC = () => {
               <div className="text-xl font-bold">{event.location}</div>
             </div>
             <div className="pt-6 border-t border-white/20">
-              <button className="w-full py-4 bg-white text-brand font-black rounded-2xl shadow-lg hover:bg-slate-100 transition-all">
-                Join Event Now
+              <button 
+                onClick={handleJoinEvent}
+                disabled={isUserInEvent || joinedEvent}
+                className={`w-full py-4 font-black rounded-2xl shadow-lg transition-all ${
+                  isUserInEvent || joinedEvent 
+                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed' 
+                    : 'bg-white text-brand hover:bg-slate-100'
+                }`}
+              >
+                {isUserInEvent || joinedEvent ? '✓ Event Joined' : 'Join Event Now'}
               </button>
             </div>
           </div>

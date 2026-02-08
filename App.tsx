@@ -14,6 +14,7 @@ import EventDetailPage from './pages/EventDetailPage';
 import VolunteerDetailPage from './pages/VolunteerDetailPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import CommunityRequestPage from './pages/CommunityRequestPage';
 import { UserProfile } from './types';
 
 const Layout: React.FC<{ 
@@ -49,6 +50,7 @@ const Layout: React.FC<{
                 { name: 'Donate', path: '/donate' },
                 { name: 'Leaderboard', path: '/leaderboard' },
                 { name: 'Blog', path: '/blog' },
+                { name: 'Community', path: '/community-requests' }
               ].map((item) => (
                 <Link
                   key={item.name}
@@ -203,6 +205,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/events/:id" element={<EventDetailPage />} />
+          <Route path="/community-requests" element={<CommunityRequestPage />} />
           <Route path="/volunteers" element={<VolunteersPage />} />
           <Route path="/volunteers/:id" element={<VolunteerDetailPage />} />
           <Route path="/donate" element={<DonatePage />} />

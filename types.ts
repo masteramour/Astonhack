@@ -10,12 +10,13 @@ export interface UserProfile {
   name: string;
   role: UserRole;
   email: string;
-  phone: string;
+  phone?: string;
   avatar: string;
   location: {
     lat: number;
     lng: number;
   };
+  interests?: string[];
   skills: string[];
   eventsHelped: number;
   totalDonatedTime: number; // hours

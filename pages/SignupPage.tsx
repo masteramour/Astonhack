@@ -17,6 +17,20 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
+  const [interests, setInterests] = useState<string[]>([]);
+
+  const INTEREST_OPTIONS = [
+    'Environment',
+    'Education',
+    'Health',
+    'Animal Welfare',
+    'Community',
+    'Arts & Culture',
+    'Homelessness',
+    'Food Security',
+    'Technology',
+    'Sports'
+  ];
 
   useEffect(() => {
     // Request user's current location on component mount
@@ -51,6 +65,8 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
       email: email || 'new@8vents.com',
       avatar: `https://picsum.photos/seed/${encodeURIComponent(name || 'new')}/200`,
       location: location,
+      interests: interests,
+      phone: '',
       skills: [],
       eventsHelped: 0,
       totalDonatedTime: 0,
@@ -63,6 +79,8 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
       const stored = JSON.parse(localStorage.getItem('users') || '[]');
       stored.push(newUser);
       localStorage.setItem('users', JSON.stringify(stored));
+      // Set this user as the current user
+      localStorage.setItem('currentUser', JSON.stringify(newUser));
     } catch (err) {
       console.error('Failed to persist new user', err);
     }
@@ -158,6 +176,25 @@ const SignupPage: React.FC<SignupPageProps> = ({ onSignup }) => {
                 className="block w-full px-5 py-4 border-none bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand sm:text-sm"
                 placeholder="bubbles@sea.com"
               />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Interests</label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              {INTEREST_OPTIONS.map((opt) => (
+                <label key={opt} className={`flex items-center gap-2 p-2 rounded-xl cursor-pointer select-none border ${interests.includes(opt) ? 'bg-brand/10 border-brand' : 'bg-slate-50 dark:bg-slate-700 border-slate-100 dark:border-slate-700'}`}>
+                  <input
+                    type="checkbox"
+                    checked={interests.includes(opt)}
+                    onChange={() => {
+                      setInterests((prev) => prev.includes(opt) ? prev.filter(i => i !== opt) : [...prev, opt]);
+                    }}
+                    className="h-4 w-4 text-brand rounded"
+                  />
+                  <span className="text-sm font-bold text-slate-700 dark:text-slate-200">{opt}</span>
+                </label>
+              ))}
             </div>
           </div>
 

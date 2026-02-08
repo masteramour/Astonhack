@@ -68,6 +68,183 @@ app.get('/api/donations', (req, res) => {
   }
 });
 
+// ==================== RECOMMENDATIONS ENGINE ====================
+
+/**
+ * POST endpoint to store all users
+ */
+app.post('/api/users', (req, res) => {
+  try {
+    const users = req.body;
+    
+    if (!Array.isArray(users)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Users must be an array' 
+      });
+    }
+    
+    const usersFile = path.join(__dirname, 'users.json');
+    fs.writeFileSync(usersFile, JSON.stringify(users, null, 2));
+    
+    res.json({ success: true, message: `Stored ${users.length} users` });
+  } catch (error) {
+    console.error('Error storing users:', error);
+    res.status(500).json({ success: false, message: 'Error storing users' });
+  }
+});
+
+/**
+ * POST endpoint to accept user interests from frontend
+ */
+  try {
+    const { userId, interests } = req.body;
+    
+    if (!userId || !interests) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'userId and interests are required' 
+      });
+    }
+    
+    // Store interests in a simple JSON file for this session
+    const interestsFile = path.join(__dirname, 'user_interests.json');
+    let interestsData = {};
+    
+    if (fs.existsSync(interestsFile)) {
+      interestsData = JSON.parse(fs.readFileSync(interestsFile, 'utf-8'));
+    }
+    
+    interestsData[userId] = interests;
+    fs.writeFileSync(interestsFile, JSON.stringify(interestsData, null, 2));
+    
+    res.json({ success: true, message: 'Interests saved' });
+  } catch (error) {
+    console.error('Error saving interests:', error);
+    res.status(500).json({ success: false, message: 'Error saving interests' });
+  }
+});
+
+// GET endpoint for personalized recommendations based on user interests
+app.get('/api/recommendations', (req, res) => {
+  try {
+    const userId = req.query.userId || 'current-user';
+    const max = parseInt(req.query.max) || 10;
+    
+    // Read stored user interests
+    const interestsFile = path.join(__dirname, 'user_interests.json');
+    let userInterestsMap = {};
+    
+    if (fs.existsSync(interestsFile)) {
+      userInterestsMap = JSON.parse(fs.readFileSync(interestsFile, 'utf-8'));
+    }
+    
+    // Get the current user's interests
+    const userInterests = userInterestsMap[userId] || [];
+    
+    // Read all users from localStorage data (passed via request or from a users file)
+    const usersFile = path.join(__dirname, 'users.json');
+    let allUsers = [];
+    
+    if (fs.existsSync(usersFile)) {
+      allUsers = JSON.parse(fs.readFileSync(usersFile, 'utf-8'));
+    }
+    
+    // Generate recommendations by matching interests
+    const recommendations = [];
+    
+    for (const otherUser of allUsers) {
+      // Skip self
+      if (otherUser.id === userId) {
+        continue;
+      }
+      
+      // Skip if no interests data
+      if (!otherUser.interests || otherUser.interests.length === 0) {
+        continue;
+      }
+      
+      // Calculate shared interests
+      const sharedInterests = userInterests.filter(interest =>
+        otherUser.interests.some(oInterest => 
+          oInterest.toLowerCase() === interest.toLowerCase()
+        )
+      );
+      
+      // Skip if no shared interests
+      if (sharedInterests.length === 0) {
+        continue;
+      }
+      
+      // Calculate match score based on shared interests
+      const matchScore = Math.round(
+        (sharedInterests.length / Math.max(userInterests.length, otherUser.interests.length)) * 100
+      );
+      
+      // Build match reasons
+      const matchReasons = [
+        {
+          type: 'interest',
+          description: `Both interested in ${sharedInterests.slice(0, 2).join(' and ')}`,
+          weight: 0.30
+        }
+      ];
+      
+      // Generate recommendation reason
+      let culturalConnection = '';
+      if (sharedInterests.length === userInterests.length) {
+        culturalConnection = `Perfect match! All your interests align`;
+      } else if (sharedInterests.length >= 2) {
+        culturalConnection = `Strong shared passion for ${sharedInterests.join(', ')}`;
+      } else {
+        culturalConnection = `Great potential to collaborate on ${sharedInterests[0]}`;
+      }
+      
+      // Suggested activities based on shared interests
+      const suggestedActivities = sharedInterests.map(interest => 
+        `${interest} volunteer projects and events`
+      );
+      
+      recommendations.push({
+        recommendedUserId: otherUser.id,
+        recommendedUserName: otherUser.name,
+        matchScore,
+        matchReasons,
+        sharedInterests,
+        culturalConnection,
+        suggestedActivities: suggestedActivities.slice(0, 3)
+      });
+    }
+    
+    // Sort by match score (descending)
+    recommendations.sort((a, b) => b.matchScore - a.matchScore);
+    
+    // Return top matches
+    const topRecommendations = recommendations.slice(0, max);
+    
+    res.json({
+      success: true,
+      data: topRecommendations,
+      metadata: {
+        generatedAt: new Date().toISOString(),
+        dataPoints: recommendations.length,
+        confidence: topRecommendations.length > 0 ? 0.85 : 0.5,
+        userId: userId,
+        userInterests: userInterests,
+        totalCandidates: allUsers.length
+      }
+    });
+  } catch (error) {
+    console.error('Error generating recommendations:', error);
+    res.status(500).json({ 
+      success: false, 
+      data: [],
+      message: 'Error generating recommendations',
+      error: error.message
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Donations server running on http://localhost:${PORT}`);
 });

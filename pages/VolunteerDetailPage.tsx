@@ -13,6 +13,12 @@ const VolunteerDetailPage: React.FC<{ overrideUser?: UserProfile, setCurrentUser
   // eslint-disable-next-line no-console
   console.log('VolunteerDetailPage:', { id, overrideUserId: overrideUser?.id, resolvedUserId: user?.id });
   const userEvents = MOCK_EVENTS.filter(e => e.volunteersJoined.includes(user?.id || ''));
+  
+  // Separate upcoming and past events
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const upcomingEvents = userEvents.filter(e => new Date(e.date) >= today).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  const pastEvents = userEvents.filter(e => new Date(e.date) < today).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState({ name: '', email: '', phone: '' });
@@ -93,17 +99,37 @@ const VolunteerDetailPage: React.FC<{ overrideUser?: UserProfile, setCurrentUser
               <p className="text-xl text-slate-500 dark:text-slate-400 mt-4 max-w-2xl">{user.bio}</p>
             </div>
 
-            <div className="flex flex-wrap justify-center md:justify-start gap-3">
-              {user.skills.map(skill => (
-                <span key={skill} className="bg-slate-100 dark:bg-slate-700 px-4 py-2 rounded-xl text-sm font-bold">
-                  {skill}
-                </span>
-              ))}
+            <div className="space-y-4">
+              {user.skills.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Skills</h3>
+                  <div className="flex flex-wrap justify-center md:justify-start gap-3">
+                    {user.skills.map(skill => (
+                      <span key={skill} className="bg-slate-100 dark:bg-slate-700 px-4 py-2 rounded-xl text-sm font-bold">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {user.interests && user.interests.length > 0 && (
+                <div>
+                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Interests</h3>
+                  <div className="flex flex-wrap justify-center md:justify-start gap-3">
+                    {user.interests.map(interest => (
+                      <span key={interest} className="bg-brand/10 text-brand px-4 py-2 rounded-xl text-sm font-bold border border-brand/30">
+                        {interest}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-wrap justify-center md:justify-start gap-6 py-6 border-y border-slate-200 dark:border-slate-700">
               <div className="flex items-center gap-3">
-                <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinecap="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                <svg className="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                 <div>
                   <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Email</div>
                   {overrideUser && isEditing ? (
@@ -146,29 +172,55 @@ const VolunteerDetailPage: React.FC<{ overrideUser?: UserProfile, setCurrentUser
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <section className="space-y-8">
-          <h2 className="text-3xl font-black">History with 8vents</h2>
-          <div className="space-y-4">
-            {userEvents.length > 0 ? userEvents.map(event => (
-              <Link 
-                key={event.id}
-                to={`/events/${event.id}`}
-                className="block bg-white dark:bg-slate-800 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-700 hover:border-brand/50 transition-all flex items-center gap-6 group"
-              >
-                <img src={event.image} className="w-24 h-24 rounded-2xl object-cover" alt={event.title} />
-                <div className="flex-1">
-                  <h4 className="text-xl font-bold group-hover:text-brand transition-colors">{event.title}</h4>
-                  <div className="text-sm text-slate-400 mt-1">{new Date(event.date).toLocaleDateString()}</div>
+          <div>
+            <h2 className="text-3xl font-black mb-6">Events to Attend</h2>
+            <div className="space-y-4">
+              {upcomingEvents.length > 0 ? upcomingEvents.map(event => (
+                <Link 
+                  key={event.id}
+                  to={`/events/${event.id}`}
+                  className="block bg-white dark:bg-slate-800 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-700 hover:border-brand/50 transition-all flex items-center gap-6 group"
+                >
+                  <img src={event.image} className="w-24 h-24 rounded-2xl object-cover" alt={event.title} />
+                  <div className="flex-1">
+                    <h4 className="text-xl font-bold group-hover:text-brand transition-colors">{event.title}</h4>
+                    <div className="text-sm text-slate-400 mt-1">{new Date(event.date).toLocaleDateString()}</div>
+                  </div>
+                  <div className="bg-slate-50 dark:bg-slate-700 p-3 rounded-xl">
+                    <svg className="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                  </div>
+                </Link>
+              )) : (
+                <div className="bg-slate-50 dark:bg-slate-800/50 p-12 rounded-[2rem] text-center text-slate-400">
+                  No upcoming events scheduled.
                 </div>
-                <div className="bg-slate-50 dark:bg-slate-700 p-3 rounded-xl">
-                  <svg className="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                </div>
-              </Link>
-            )) : (
-              <div className="bg-slate-50 dark:bg-slate-800/50 p-12 rounded-[2rem] text-center text-slate-400">
-                No events joined yet.
-              </div>
-            )}
+              )}
+            </div>
           </div>
+
+          {pastEvents.length > 0 && (
+            <div>
+              <h2 className="text-3xl font-black mb-6">Past Events</h2>
+              <div className="space-y-4">
+                {pastEvents.map(event => (
+                  <Link 
+                    key={event.id}
+                    to={`/events/${event.id}`}
+                    className="block bg-slate-50 dark:bg-slate-800/50 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-700 hover:border-brand/50 transition-all flex items-center gap-6 group opacity-75"
+                  >
+                    <img src={event.image} className="w-24 h-24 rounded-2xl object-cover" alt={event.title} />
+                    <div className="flex-1">
+                      <h4 className="text-xl font-bold group-hover:text-brand transition-colors">{event.title}</h4>
+                      <div className="text-sm text-slate-400 mt-1">{new Date(event.date).toLocaleDateString()}</div>
+                    </div>
+                    <div className="bg-slate-200 dark:bg-slate-700 p-3 rounded-xl">
+                      <svg className="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </section>
 
         <section className="bg-slate-900 text-white p-12 rounded-[3rem] space-y-8">
