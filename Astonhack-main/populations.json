@@ -1,0 +1,489 @@
+{
+  "locations": [
+    {
+      "location": "New York City",
+      "totalEvents": 25,
+      "totalParticipants": 350,
+      "averageParticipantsPerEvent": 14,
+      "volunteerDemand": 8,
+      "successRate": 0.92,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.95
+      }
+    },
+    {
+      "location": "Los Angeles",
+      "totalEvents": 20,
+      "totalParticipants": 280,
+      "averageParticipantsPerEvent": 14,
+      "volunteerDemand": 7,
+      "successRate": 0.89,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.93
+      }
+    },
+    {
+      "location": "Chicago",
+      "totalEvents": 18,
+      "totalParticipants": 240,
+      "averageParticipantsPerEvent": 13,
+      "volunteerDemand": 6,
+      "successRate": 0.88,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.91
+      }
+    },
+    {
+      "location": "San Francisco",
+      "totalEvents": 16,
+      "totalParticipants": 220,
+      "averageParticipantsPerEvent": 13.75,
+      "volunteerDemand": 7,
+      "successRate": 0.91,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.92
+      }
+    },
+    {
+      "location": "Toronto",
+      "totalEvents": 14,
+      "totalParticipants": 180,
+      "averageParticipantsPerEvent": 12.9,
+      "volunteerDemand": 5,
+      "successRate": 0.87,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.9
+      }
+    },
+    {
+      "location": "Mexico City",
+      "totalEvents": 17,
+      "totalParticipants": 250,
+      "averageParticipantsPerEvent": 14.7,
+      "volunteerDemand": 8,
+      "successRate": 0.86,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.88
+      }
+    },
+    {
+      "location": "São Paulo",
+      "totalEvents": 22,
+      "totalParticipants": 310,
+      "averageParticipantsPerEvent": 14.1,
+      "volunteerDemand": 9,
+      "successRate": 0.85,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.89
+      }
+    },
+    {
+      "location": "Buenos Aires",
+      "totalEvents": 13,
+      "totalParticipants": 170,
+      "averageParticipantsPerEvent": 13.1,
+      "volunteerDemand": 5,
+      "successRate": 0.84,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.87
+      }
+    },
+    {
+      "location": "Lima",
+      "totalEvents": 11,
+      "totalParticipants": 150,
+      "averageParticipantsPerEvent": 13.6,
+      "volunteerDemand": 4,
+      "successRate": 0.83,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.85
+      }
+    },
+    {
+      "location": "London",
+      "totalEvents": 24,
+      "totalParticipants": 340,
+      "averageParticipantsPerEvent": 14.2,
+      "volunteerDemand": 9,
+      "successRate": 0.91,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.94
+      }
+    },
+    {
+      "location": "Paris",
+      "totalEvents": 21,
+      "totalParticipants": 310,
+      "averageParticipantsPerEvent": 14.8,
+      "volunteerDemand": 8,
+      "successRate": 0.9,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.93
+      }
+    },
+    {
+      "location": "Berlin",
+      "totalEvents": 18,
+      "totalParticipants": 260,
+      "averageParticipantsPerEvent": 14.4,
+      "volunteerDemand": 6,
+      "successRate": 0.88,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.91
+      }
+    },
+    {
+      "location": "Amsterdam",
+      "totalEvents": 15,
+      "totalParticipants": 210,
+      "averageParticipantsPerEvent": 14,
+      "volunteerDemand": 5,
+      "successRate": 0.89,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.9
+      }
+    },
+    {
+      "location": "Madrid",
+      "totalEvents": 16,
+      "totalParticipants": 230,
+      "averageParticipantsPerEvent": 14.4,
+      "volunteerDemand": 6,
+      "successRate": 0.87,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.89
+      }
+    },
+    {
+      "location": "Rome",
+      "totalEvents": 13,
+      "totalParticipants": 190,
+      "averageParticipantsPerEvent": 14.6,
+      "volunteerDemand": 5,
+      "successRate": 0.86,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.88
+      }
+    },
+    {
+      "location": "Cairo",
+      "totalEvents": 12,
+      "totalParticipants": 160,
+      "averageParticipantsPerEvent": 13.3,
+      "volunteerDemand": 6,
+      "successRate": 0.82,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.84
+      }
+    },
+    {
+      "location": "Lagos",
+      "totalEvents": 14,
+      "totalParticipants": 200,
+      "averageParticipantsPerEvent": 14.3,
+      "volunteerDemand": 7,
+      "successRate": 0.81,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.83
+      }
+    },
+    {
+      "location": "Cape Town",
+      "totalEvents": 11,
+      "totalParticipants": 150,
+      "averageParticipantsPerEvent": 13.6,
+      "volunteerDemand": 4,
+      "successRate": 0.85,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.87
+      }
+    },
+    {
+      "location": "Dubai",
+      "totalEvents": 19,
+      "totalParticipants": 280,
+      "averageParticipantsPerEvent": 14.7,
+      "volunteerDemand": 7,
+      "successRate": 0.89,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.91
+      }
+    },
+    {
+      "location": "Istanbul",
+      "totalEvents": 16,
+      "totalParticipants": 230,
+      "averageParticipantsPerEvent": 14.4,
+      "volunteerDemand": 6,
+      "successRate": 0.87,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.89
+      }
+    },
+    {
+      "location": "Tel Aviv",
+      "totalEvents": 12,
+      "totalParticipants": 170,
+      "averageParticipantsPerEvent": 14.2,
+      "volunteerDemand": 5,
+      "successRate": 0.88,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.9
+      }
+    },
+    {
+      "location": "Tokyo",
+      "totalEvents": 26,
+      "totalParticipants": 380,
+      "averageParticipantsPerEvent": 14.6,
+      "volunteerDemand": 9,
+      "successRate": 0.92,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.95
+      }
+    },
+    {
+      "location": "Seoul",
+      "totalEvents": 23,
+      "totalParticipants": 330,
+      "averageParticipantsPerEvent": 14.3,
+      "volunteerDemand": 8,
+      "successRate": 0.9,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.93
+      }
+    },
+    {
+      "location": "Beijing",
+      "totalEvents": 24,
+      "totalParticipants": 350,
+      "averageParticipantsPerEvent": 14.6,
+      "volunteerDemand": 8,
+      "successRate": 0.89,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.92
+      }
+    },
+    {
+      "location": "Shanghai",
+      "totalEvents": 25,
+      "totalParticipants": 360,
+      "averageParticipantsPerEvent": 14.4,
+      "volunteerDemand": 9,
+      "successRate": 0.9,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.93
+      }
+    },
+    {
+      "location": "Mumbai",
+      "totalEvents": 20,
+      "totalParticipants": 290,
+      "averageParticipantsPerEvent": 14.5,
+      "volunteerDemand": 8,
+      "successRate": 0.86,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.89
+      }
+    },
+    {
+      "location": "Bangkok",
+      "totalEvents": 17,
+      "totalParticipants": 250,
+      "averageParticipantsPerEvent": 14.7,
+      "volunteerDemand": 7,
+      "successRate": 0.85,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.88
+      }
+    },
+    {
+      "location": "Singapore",
+      "totalEvents": 14,
+      "totalParticipants": 200,
+      "averageParticipantsPerEvent": 14.3,
+      "volunteerDemand": 5,
+      "successRate": 0.91,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.92
+      }
+    },
+    {
+      "location": "Hong Kong",
+      "totalEvents": 19,
+      "totalParticipants": 280,
+      "averageParticipantsPerEvent": 14.7,
+      "volunteerDemand": 7,
+      "successRate": 0.9,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.92
+      }
+    },
+    {
+      "location": "Sydney",
+      "totalEvents": 16,
+      "totalParticipants": 230,
+      "averageParticipantsPerEvent": 14.4,
+      "volunteerDemand": 6,
+      "successRate": 0.89,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.91
+      }
+    },
+    {
+      "location": "Auckland",
+      "totalEvents": 10,
+      "totalParticipants": 140,
+      "averageParticipantsPerEvent": 14,
+      "volunteerDemand": 4,
+      "successRate": 0.87,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.88
+      }
+    },
+    {
+      "location": "Birmingham City Centre",
+      "totalEvents": 18,
+      "totalParticipants": 260,
+      "averageParticipantsPerEvent": 14.4,
+      "volunteerDemand": 7,
+      "successRate": 0.89,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.91
+      }
+    },
+    {
+      "location": "Sutton Coldfield",
+      "totalEvents": 12,
+      "totalParticipants": 180,
+      "averageParticipantsPerEvent": 15,
+      "volunteerDemand": 5,
+      "successRate": 0.87,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.89
+      }
+    },
+    {
+      "location": "Edgbaston",
+      "totalEvents": 15,
+      "totalParticipants": 210,
+      "averageParticipantsPerEvent": 14,
+      "volunteerDemand": 6,
+      "successRate": 0.88,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.9
+      }
+    },
+    {
+      "location": "Solihull",
+      "totalEvents": 10,
+      "totalParticipants": 140,
+      "averageParticipantsPerEvent": 14,
+      "volunteerDemand": 4,
+      "successRate": 0.86,
+      "metadata": {
+        "generatedAt": "2026-02-07T00:00:00Z",
+        "dataPoints": 1,
+        "confidence": 0.88
+      }
+    }
+  ],
+  "people": [
+    {
+      "id": "P001",
+      "name": "John Doe",
+      "age": 34,
+      "location": "Birmingham City Centre",
+      "volunteerHours": 120
+    },
+    {
+      "id": "P002",
+      "name": "Jane Smith",
+      "age": 28,
+      "location": "Sutton Coldfield",
+      "volunteerHours": 95
+    },
+    {
+      "id": "P003",
+      "name": "Emily Johnson",
+      "age": 41,
+      "location": "Edgbaston",
+      "volunteerHours": 150
+    },
+    {
+      "id": "P004",
+      "name": "Michael Brown",
+      "age": 37,
+      "location": "Solihull",
+      "volunteerHours": 110
+    }
+  ]
+}

@@ -1,0 +1,401 @@
+{
+  "users": {
+    "1": {
+      "userId": "1",
+      "name": "Sarah Octopus",
+      "totalPoints": 450,
+      "currentStreak": 5,
+      "bestStreak": 12,
+      "level": 2,
+      "lastActivityDate": "2026-02-08",
+      "interests": [
+        "community_request:1",
+        "community_request:5",
+        "community_request:10"
+      ],
+      "interestedRequests": [
+        {
+          "requestId": "1",
+          "timestamp": "2026-02-08T10:30:00Z",
+          "pointsEarned": 150
+        },
+        {
+          "requestId": "5",
+          "timestamp": "2026-02-07T14:20:00Z",
+          "pointsEarned": 120
+        },
+        {
+          "requestId": "10",
+          "timestamp": "2026-02-06T09:15:00Z",
+          "pointsEarned": 140
+        }
+      ],
+      "activities": [
+        {
+          "type": "community_request",
+          "points": 150,
+          "timestamp": "2026-02-08T10:30:00Z",
+          "description": "Interested in: Help Me Move My Couch",
+          "metadata": {
+            "requestId": "1"
+          }
+        },
+        {
+          "type": "community_request",
+          "points": 120,
+          "timestamp": "2026-02-07T14:20:00Z",
+          "description": "Interested in: IKEA Furniture Assembly Help",
+          "metadata": {
+            "requestId": "5"
+          }
+        },
+        {
+          "type": "community_request",
+          "points": 140,
+          "timestamp": "2026-02-06T09:15:00Z",
+          "description": "Interested in: Community Garden Help Needed",
+          "metadata": {
+            "requestId": "10"
+          }
+        }
+      ],
+      "categoryPreferences": {
+        "help": 2,
+        "food": 0,
+        "items": 0,
+        "skills": 0,
+        "other": 1
+      },
+      "locationPreferences": [
+        "Birmingham, UK",
+        "Kings Heath, Birmingham",
+        "Stirchley, Birmingham"
+      ],
+      "urgencyResponse": {
+        "high": 1,
+        "medium": 2,
+        "low": 0
+      }
+    },
+    "2": {
+      "userId": "2",
+      "name": "James Tentacle",
+      "totalPoints": 820,
+      "currentStreak": 15,
+      "bestStreak": 20,
+      "level": 4,
+      "lastActivityDate": "2026-02-08",
+      "interests": [
+        "community_request:2",
+        "community_request:6",
+        "community_request:13",
+        "community_request:15",
+        "community_request:16"
+      ],
+      "interestedRequests": [
+        {
+          "requestId": "2",
+          "timestamp": "2026-02-08T11:00:00Z",
+          "pointsEarned": 75
+        },
+        {
+          "requestId": "6",
+          "timestamp": "2026-02-07T16:30:00Z",
+          "pointsEarned": 50
+        },
+        {
+          "requestId": "13",
+          "timestamp": "2026-02-08T13:45:00Z",
+          "pointsEarned": 70
+        },
+        {
+          "requestId": "15",
+          "timestamp": "2026-02-07T10:00:00Z",
+          "pointsEarned": 125
+        },
+        {
+          "requestId": "16",
+          "timestamp": "2026-02-07T15:20:00Z",
+          "pointsEarned": 135
+        }
+      ],
+      "activities": [
+        {
+          "type": "community_request",
+          "points": 75,
+          "timestamp": "2026-02-08T11:00:00Z",
+          "description": "Interested in: Extra Food - Come Get It!",
+          "metadata": {
+            "requestId": "2"
+          }
+        },
+        {
+          "type": "community_request",
+          "points": 50,
+          "timestamp": "2026-02-07T16:30:00Z",
+          "description": "Interested in: Homemade Baked Goods - Saturday Pickup",
+          "metadata": {
+            "requestId": "6"
+          }
+        },
+        {
+          "type": "community_request",
+          "points": 70,
+          "timestamp": "2026-02-08T13:45:00Z",
+          "description": "Interested in: Leftover Party Food!",
+          "metadata": {
+            "requestId": "13"
+          }
+        },
+        {
+          "type": "community_request",
+          "points": 125,
+          "timestamp": "2026-02-07T10:00:00Z",
+          "description": "Interested in: Bike Repair Workshop - Free!",
+          "metadata": {
+            "requestId": "15"
+          }
+        },
+        {
+          "type": "community_request",
+          "points": 135,
+          "timestamp": "2026-02-07T15:20:00Z",
+          "description": "Interested in: Need Help Painting Fence",
+          "metadata": {
+            "requestId": "16"
+          }
+        },
+        {
+          "type": "streak_bonus",
+          "points": 50,
+          "timestamp": "2026-02-05T00:00:00Z",
+          "description": "7-day streak bonus! 🔥",
+          "metadata": {
+            "streakDays": 7
+          }
+        }
+      ],
+      "categoryPreferences": {
+        "help": 1,
+        "food": 3,
+        "items": 0,
+        "skills": 1,
+        "other": 0
+      },
+      "locationPreferences": [
+        "Solihull, UK",
+        "Selly Oak, Birmingham",
+        "Harborne, Birmingham",
+        "Digbeth, Birmingham",
+        "Northfield, Birmingham"
+      ],
+      "urgencyResponse": {
+        "high": 2,
+        "medium": 3,
+        "low": 0
+      }
+    },
+    "current-user": {
+      "userId": "current-user",
+      "name": "Current User",
+      "totalPoints": 480,
+      "currentStreak": 1,
+      "bestStreak": 0,
+      "level": 2,
+      "lastActivityDate": "2026-02-08",
+      "interests": [
+        "community_request:5",
+        "community_request:1",
+        "community_request:req_1770550300353",
+        "community_request:11"
+      ],
+      "interestedRequests": [
+        {
+          "requestId": "5",
+          "timestamp": "2026-02-08T11:29:59.033Z",
+          "pointsEarned": 120
+        },
+        {
+          "requestId": "1",
+          "timestamp": "2026-02-08T11:31:51.983Z",
+          "pointsEarned": 150
+        },
+        {
+          "requestId": "req_1770550300353",
+          "timestamp": "2026-02-08T11:32:51.383Z",
+          "pointsEarned": 110
+        },
+        {
+          "requestId": "11",
+          "timestamp": "2026-02-08T11:32:58.211Z",
+          "pointsEarned": 100
+        }
+      ],
+      "activities": [
+        {
+          "type": "community_request",
+          "points": 120,
+          "timestamp": "2026-02-08T11:29:59.033Z",
+          "description": "Interested in: IKEA Furniture Assembly Help",
+          "metadata": {
+            "requestId": "5"
+          }
+        },
+        {
+          "type": "community_request",
+          "points": 150,
+          "timestamp": "2026-02-08T11:31:51.983Z",
+          "description": "Interested in: Help Me Move My Couch",
+          "metadata": {
+            "requestId": "1"
+          }
+        },
+        {
+          "type": "community_request",
+          "points": 110,
+          "timestamp": "2026-02-08T11:32:51.383Z",
+          "description": "Interested in: Need Math Tutor",
+          "metadata": {
+            "requestId": "req_1770550300353"
+          }
+        },
+        {
+          "type": "community_request",
+          "points": 100,
+          "timestamp": "2026-02-08T11:32:58.211Z",
+          "description": "Interested in: Car Share to London - This Weekend",
+          "metadata": {
+            "requestId": "11"
+          }
+        }
+      ],
+      "categoryPreferences": {
+        "help": 2,
+        "food": 0,
+        "items": 0,
+        "skills": 1,
+        "other": 1
+      },
+      "locationPreferences": [
+        "Kings Heath, Birmingham",
+        "Birmingham, UK",
+        "Birmingham",
+        "City Centre, Birmingham"
+      ],
+      "urgencyResponse": {
+        "high": 2,
+        "medium": 2,
+        "low": 0
+      }
+    },
+    "test-user-2": {
+      "userId": "test-user-2",
+      "name": "User test-user-2",
+      "totalPoints": 150,
+      "currentStreak": 1,
+      "bestStreak": 0,
+      "level": 1,
+      "lastActivityDate": "2026-02-08",
+      "interests": [
+        "community_request:1"
+      ],
+      "interestedRequests": [
+        {
+          "requestId": "1",
+          "timestamp": "2026-02-08T11:28:54.636Z",
+          "pointsEarned": 150
+        }
+      ],
+      "activities": [
+        {
+          "type": "community_request",
+          "points": 150,
+          "timestamp": "2026-02-08T11:28:54.636Z",
+          "description": "Interested in: Help Me Move My Couch",
+          "metadata": {
+            "requestId": "1"
+          }
+        }
+      ],
+      "categoryPreferences": {
+        "help": 1,
+        "food": 0,
+        "items": 0,
+        "skills": 0,
+        "other": 0
+      },
+      "locationPreferences": [
+        "Birmingham, UK"
+      ],
+      "urgencyResponse": {
+        "high": 1,
+        "medium": 0,
+        "low": 0
+      }
+    },
+    "functional-test-user": {
+      "userId": "functional-test-user",
+      "name": "User functional-test-user",
+      "totalPoints": 85,
+      "currentStreak": 1,
+      "bestStreak": 0,
+      "level": 0,
+      "lastActivityDate": "2026-02-08",
+      "interests": [
+        "community_request:20"
+      ],
+      "interestedRequests": [
+        {
+          "requestId": "20",
+          "timestamp": "2026-02-08T11:31:40.554Z",
+          "pointsEarned": 85
+        }
+      ],
+      "activities": [
+        {
+          "type": "community_request",
+          "points": 85,
+          "timestamp": "2026-02-08T11:31:40.554Z",
+          "description": "Interested in: Meal Prep Group",
+          "metadata": {
+            "requestId": "20"
+          }
+        }
+      ],
+      "categoryPreferences": {
+        "help": 0,
+        "food": 1,
+        "items": 0,
+        "skills": 0,
+        "other": 0
+      },
+      "locationPreferences": [
+        "Kings Heath"
+      ],
+      "urgencyResponse": {
+        "high": 0,
+        "medium": 0,
+        "low": 1
+      }
+    }
+  },
+  "analytics": {
+    "totalPointsAwarded": 1985,
+    "totalInterests": 14,
+    "mostPopularCategory": "help",
+    "averagePointsPerInterest": 141.78571428571428,
+    "categoryDistribution": {
+      "help": 6,
+      "food": 4,
+      "items": 0,
+      "skills": 2,
+      "other": 2
+    },
+    "urgencyDistribution": {
+      "high": 6,
+      "medium": 7,
+      "low": 1
+    },
+    "lastUpdated": "2026-02-08T11:32:58.211Z"
+  }
+}

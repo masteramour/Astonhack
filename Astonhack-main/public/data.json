@@ -1,0 +1,140 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Sarah Octopus",
+      "role": "Event Manager",
+      "email": "sarah@8vents.com",
+      "phone": "+1 (212) 555-0142",
+      "avatar": "https://picsum.photos/seed/sarah/200",
+      "location": {
+        "lat": 40.7128,
+        "lng": -74.006
+      },
+      "skills": ["Event Planning", "Logistics"],
+      "eventsHelped": 12,
+      "totalDonatedTime": 40,
+      "totalDonatedItems": 5,
+      "bio": "Love organizing community events and helping people connect."
+    },
+    {
+      "id": "2",
+      "name": "James Tentacle",
+      "role": "Volunteer",
+      "email": "james@8vents.com",
+      "phone": "+1 (212) 555-0158",
+      "avatar": "https://picsum.photos/seed/james/200",
+      "location": {
+        "lat": 40.7306,
+        "lng": -73.9352
+      },
+      "skills": ["Cooking", "Heavy Lifting"],
+      "eventsHelped": 25,
+      "totalDonatedTime": 120,
+      "totalDonatedItems": 15,
+      "bio": "Always ready to lend a tentacle for a good cause."
+    },
+    {
+      "id": "5",
+      "name": "Emma Foster",
+      "role": "Volunteer",
+      "email": "emma@8vents.com",
+      "phone": "+44 (121) 555-0204",
+      "avatar": "https://picsum.photos/seed/emma/200",
+      "location": {
+        "lat": 52.5086,
+        "lng": -1.8753
+      },
+      "skills": ["Community Support", "Teaching"],
+      "eventsHelped": 15,
+      "totalDonatedTime": 85,
+      "totalDonatedItems": 12,
+      "bio": "Passionate about making Birmingham a better place for everyone."
+    },
+    {
+      "id": "6",
+      "name": "Michael Chen",
+      "role": "Volunteer",
+      "email": "michael@8vents.com",
+      "phone": "+44 (121) 555-0218",
+      "avatar": "https://picsum.photos/seed/michael/200",
+      "location": {
+        "lat": 52.5156,
+        "lng": -1.8902
+      },
+      "skills": ["Construction", "Carpentry"],
+      "eventsHelped": 22,
+      "totalDonatedTime": 156,
+      "totalDonatedItems": 34,
+      "bio": "Building a stronger community one project at a time."
+    }
+  ],
+  "donations": [
+    {
+      "id": "d1",
+      "userId": "2",
+      "type": "time",
+      "category": "Beach Cleanup",
+      "amount": 4,
+      "date": "2024-06-15T09:00:00Z"
+    },
+    {
+      "id": "d2",
+      "userId": "5",
+      "type": "item",
+      "category": "Food Drive",
+      "amount": 12,
+      "date": "2024-07-02T10:30:00Z"
+    },
+    {
+      "id": "d3",
+      "userId": "6",
+      "type": "time",
+      "category": "Community Center Repair",
+      "amount": 8,
+      "date": "2024-07-10T14:00:00Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "e1",
+      "title": "Beach Cleanup Day",
+      "description": "Help us clean up the local shoreline! We need volunteers to pick up trash and sort recyclables. Equipment will be provided.",
+      "managerId": "1",
+      "date": "2024-06-15",
+      "location": "Ocean Park Beach",
+      "volunteersNeeded": 20,
+      "volunteersJoined": ["2", "4"],
+      "image": "https://picsum.photos/seed/beach/800/400",
+      "tags": ["Environment", "Outdoors"]
+    },
+    {
+      "id": "e2",
+      "title": "Community Food Drive",
+      "description": "Collecting and sorting non-perishable food items for local families in need. Sorting happens at the community center.",
+      "managerId": "1",
+      "date": "2024-07-02",
+      "location": "Central Community Center",
+      "volunteersNeeded": 10,
+      "volunteersJoined": ["2"],
+      "image": "https://picsum.photos/seed/food/800/400",
+      "tags": ["Charity", "Social Service"]
+    }
+  ],
+  "blogs": [
+    {
+      "id": "b1",
+      "title": "How Volunteering Changed My Life",
+      "authorId": "2",
+      "content": "Starting as a volunteer at 8vents was the best decision I ever made. I found my community and my purpose...",
+      "date": "2024-05-20",
+      "category": "Success Story",
+      "image": "https://picsum.photos/seed/blog1/600/300"
+    }
+  ],
+  "lastUpdated": "2024-02-07T00:00:00Z",
+  "appMetadata": {
+    "version": "1.0.0",
+    "description": "8vents Community Platform - Data Storage"
+  }
+}

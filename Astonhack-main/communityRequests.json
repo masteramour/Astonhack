@@ -1,0 +1,51 @@
+[
+  {
+    "id": "req_1770550209079",
+    "createdAt": "2026-02-08T11:30:09.079Z",
+    "status": "open",
+    "supporters": 0,
+    "requesterName": "Current User",
+    "requesterAvatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
+    "title": "Test Request",
+    "description": "Testing request creation",
+    "category": "help",
+    "urgency": "high",
+    "location": "Birmingham",
+    "pointsReward": 100,
+    "latitude": 52.5,
+    "longitude": -1.8
+  },
+  {
+    "id": "req_1770550300353",
+    "createdAt": "2026-02-08T11:31:40.353Z",
+    "status": "open",
+    "supporters": 0,
+    "requesterName": "Current User",
+    "requesterAvatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
+    "title": "Need Math Tutor",
+    "description": "Looking for help with calculus",
+    "category": "skills",
+    "urgency": "medium",
+    "location": "Birmingham",
+    "pointsReward": 110,
+    "latitude": 52.48,
+    "longitude": -1.89
+  },
+  {
+    "id": "req_1770550528026",
+    "createdAt": "2026-02-08T11:35:28.026Z",
+    "status": "open",
+    "supporters": 0,
+    "requesterName": "Current User",
+    "requesterAvatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
+    "title": "Hi ",
+    "description": "2121",
+    "category": "help",
+    "urgency": "medium",
+    "location": "BIRMINGHAM",
+    "targetDate": "12222-12-12",
+    "pointsReward": 100,
+    "latitude": 52.46282584629316,
+    "longitude": -1.888226101088462
+  }
+]

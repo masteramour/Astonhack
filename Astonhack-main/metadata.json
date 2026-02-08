@@ -1,0 +1,7 @@
+{
+  "name": "8vents - Octopus Event Management",
+  "description": "An all-in-one event management platform connecting managers with volunteers, featuring community blogs, donations, and proximity-based volunteer tracking.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
