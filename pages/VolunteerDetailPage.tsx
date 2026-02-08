@@ -23,11 +23,23 @@ const VolunteerDetailPage: React.FC<{ overrideUser?: UserProfile, setCurrentUser
   const pastEvents = userEvents.filter(e => new Date(e.date) < today).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const [isEditing, setIsEditing] = useState(false);
-  const [editData, setEditData] = useState({ name: '', email: '', phone: '' });
+  const [editData, setEditData] = useState({ name: '', email: '', phone: '', interests: [] as string[] });
+  const [interestInput, setInterestInput] = useState('');
+
+  const AVAILABLE_INTERESTS = [
+    'Environment', 'Education', 'Health', 'Animal Welfare', 'Community',
+    'Arts & Culture', 'Homelessness', 'Food Security', 'Technology', 'Sports',
+    'Charity', 'Social Service', 'Creative', 'Holiday', 'Teaching'
+  ];
 
   useEffect(() => {
     if (user && overrideUser) {
-      setEditData({ name: user.name, email: user.email, phone: user.phone || '' });
+      setEditData({ 
+        name: user.name, 
+        email: user.email, 
+        phone: user.phone || '',
+        interests: user.interests || []
+      });
     }
   }, [user, overrideUser]);
 
@@ -36,13 +48,24 @@ const VolunteerDetailPage: React.FC<{ overrideUser?: UserProfile, setCurrentUser
     setEditData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleAddInterest = (interest: string) => {
+    if (!editData.interests.includes(interest)) {
+      setEditData(prev => ({ ...prev, interests: [...prev.interests, interest] }));
+    }
+  };
+
+  const handleRemoveInterest = (interest: string) => {
+    setEditData(prev => ({ ...prev, interests: prev.interests.filter(i => i !== interest) }));
+  };
+
   const handleSave = () => {
     if (!user) return;
     const updated: UserProfile = {
       ...user,
       name: editData.name,
       email: editData.email,
-      phone: editData.phone
+      phone: editData.phone,
+      interests: editData.interests
     };
     // update current user in app state if setter provided
     if (setCurrentUser) setCurrentUser(updated);
@@ -53,7 +76,7 @@ const VolunteerDetailPage: React.FC<{ overrideUser?: UserProfile, setCurrentUser
   };
 
   const handleCancel = () => {
-    if (user) setEditData({ name: user.name, email: user.email, phone: user.phone || '' });
+    if (user) setEditData({ name: user.name, email: user.email, phone: user.phone || '', interests: user.interests || [] });
     setIsEditing(false);
   };
 
@@ -115,18 +138,49 @@ const VolunteerDetailPage: React.FC<{ overrideUser?: UserProfile, setCurrentUser
                 </div>
               )}
 
-              {user.interests && user.interests.length > 0 && (
+              {(user.interests && user.interests.length > 0) || isEditing ? (
                 <div>
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Interests</h3>
-                  <div className="flex flex-wrap justify-center md:justify-start gap-3">
-                    {user.interests.map(interest => (
-                      <span key={interest} className="bg-brand/10 text-brand px-4 py-2 rounded-xl text-sm font-bold border border-brand/30">
-                        {interest}
-                      </span>
-                    ))}
-                  </div>
+                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">
+                    {isEditing ? 'Edit Interests' : 'Interests'}
+                  </h3>
+                  {isEditing ? (
+                    <div className="space-y-4">
+                      <div className="flex flex-wrap gap-2">
+                        {editData.interests.map(interest => (
+                          <div key={interest} className="flex items-center gap-2 bg-brand/20 text-brand px-3 py-1 rounded-lg">
+                            <span className="text-sm font-bold">{interest}</span>
+                            <button 
+                              onClick={() => handleRemoveInterest(interest)}
+                              className="text-lg font-bold hover:text-brand-dark"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        {AVAILABLE_INTERESTS.filter(i => !editData.interests.includes(i)).map(interest => (
+                          <button
+                            key={interest}
+                            onClick={() => handleAddInterest(interest)}
+                            className="px-3 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-brand hover:text-white text-sm font-bold rounded-lg transition-colors"
+                          >
+                            + {interest}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap justify-center md:justify-start gap-3">
+                      {user.interests.map(interest => (
+                        <span key={interest} className="bg-brand/10 text-brand px-4 py-2 rounded-xl text-sm font-bold border border-brand/30">
+                          {interest}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              )}
+              ) : null}
             </div>
 
             <div className="flex flex-wrap justify-center md:justify-start gap-6 py-6 border-y border-slate-200 dark:border-slate-700">
