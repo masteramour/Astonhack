@@ -1,12 +1,44 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { MOCK_EVENTS, MOCK_USERS } from '../constants';
+import { UserProfile } from '../types';
 
-const EventDetailPage: React.FC = () => {
+const EventDetailPage: React.FC<{
+  currentUser?: UserProfile | null,
+  setCurrentUser?: (user: UserProfile | null) => void
+}> = ({ currentUser, setCurrentUser }) => {
   const { id } = useParams();
+  const [joined, setJoined] = useState(currentUser ? currentUser && MOCK_EVENTS.find(e => e.id === id)?.volunteersJoined.includes(currentUser.id) : false);
   const event = MOCK_EVENTS.find(e => e.id === id);
   const manager = MOCK_USERS.find(u => u.id === event?.managerId);
+
+  const handleJoinEvent = () => {
+    if (!currentUser || !event) return;
+
+    // Prevent event managers from joining events
+    if (currentUser.role === 'Event Manager') {
+      alert('Event managers cannot join events as volunteers');
+      return;
+    }
+
+    // Add user to event's volunteersJoined
+    if (!event.volunteersJoined.includes(currentUser.id)) {
+      event.volunteersJoined.push(currentUser.id);
+    }
+
+    // Update currentUser's eventsHelped count
+    const updatedUser: UserProfile = {
+      ...currentUser,
+      eventsHelped: currentUser.eventsHelped + 1
+    };
+
+    if (setCurrentUser) {
+      setCurrentUser(updatedUser);
+    }
+
+    setJoined(true);
+  };
 
   if (!event) return <div className="p-20 text-center">Event not found.</div>;
 
@@ -62,9 +94,17 @@ const EventDetailPage: React.FC = () => {
               <div className="text-xl font-bold">{event.location}</div>
             </div>
             <div className="pt-6 border-t border-white/20">
-              <button className="w-full py-4 bg-white text-brand font-black rounded-2xl shadow-lg hover:bg-slate-100 transition-all">
-                Join Event Now
-              </button>
+              {!currentUser ? (
+                <div className="text-center text-white/60 text-sm">Please login to join events</div>
+              ) : joined ? (
+                <button disabled className="w-full py-4 bg-white/50 text-brand font-black rounded-2xl shadow-lg cursor-not-allowed opacity-50">
+                  ✓ Already Joined
+                </button>
+              ) : (
+                <button onClick={handleJoinEvent} className="w-full py-4 bg-white text-brand font-black rounded-2xl shadow-lg hover:bg-slate-100 transition-all">
+                  Join Event Now
+                </button>
+              )}
             </div>
           </div>
 

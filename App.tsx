@@ -204,7 +204,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<EventsPage />} />
-          <Route path="/events/:id" element={<EventDetailPage />} />
+          <Route path="/events/:id" element={<EventDetailPage currentUser={currentUserState} setCurrentUser={setCurrentUser} />} />
           <Route path="/community-requests" element={<CommunityRequestPage />} />
           <Route path="/volunteers" element={<VolunteersPage />} />
           <Route path="/volunteers/:id" element={<VolunteerDetailPage />} />

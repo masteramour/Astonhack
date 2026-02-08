@@ -12,6 +12,8 @@ const VolunteerDetailPage: React.FC<{ overrideUser?: UserProfile, setCurrentUser
   // Remove these logs once the issue is resolved
   // eslint-disable-next-line no-console
   console.log('VolunteerDetailPage:', { id, overrideUserId: overrideUser?.id, resolvedUserId: user?.id });
+  
+  // Get events the volunteer has already joined
   const userEvents = MOCK_EVENTS.filter(e => e.volunteersJoined.includes(user?.id || ''));
   
   // Separate upcoming and past events
