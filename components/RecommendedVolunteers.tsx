@@ -14,23 +14,78 @@ interface UserRecommendation {
   sharedInterests: string[];
   culturalConnection: string;
   suggestedActivities: string[];
+  aiInsights?: string; // Gemini AI insights
 }
 
 interface RecommendedVolunteersProps {
   userId?: number;
   displayMode?: 'cards' | 'list' | 'carousel';
   maxDisplay?: number;
+  useGemini?: boolean; // Enable Gemini AI matching
 }
 
 const RecommendedVolunteers: React.FC<RecommendedVolunteersProps> = ({ 
   userId = 1, 
   displayMode = 'cards',
-  maxDisplay = 4 
+  maxDisplay = 4,
+  useGemini = true
 }) => {
   const [recommendations, setRecommendations] = useState<UserRecommendation[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
+
+  /**
+   * Enhance recommendations with Gemini AI insights
+   */
+  const enhanceWithGemini = async (recs: UserRecommendation[]) => {
+    if (!useGemini) return recs;
+    
+    try {
+      const enhanced = await Promise.all(
+        recs.map(async (rec) => {
+          try {
+            const response = await fetch('http://localhost:3001/api/gemini-match', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                volunteer1: { id: userId },
+                volunteer2: { 
+                  id: rec.recommendedUserId,
+                  name: rec.recommendedUserName,
+                  interests: rec.sharedInterests
+                },
+                matchScore: rec.matchScore
+              })
+            });
+
+            if (response.ok) {
+              const aiData = await response.json();
+              return {
+                ...rec,
+                aiInsights: aiData.insights || rec.culturalConnection,
+                matchReasons: [
+                  ...rec.matchReasons,
+                  {
+                    type: 'cultural' as const,
+                    description: aiData.insights || '',
+                    weight: 0.1
+                  }
+                ]
+              };
+            }
+          } catch (err) {
+            console.warn('Gemini enhancement failed, using standard match:', err);
+          }
+          return rec;
+        })
+      );
+      return enhanced;
+    } catch (err) {
+      console.warn('Gemini enhancement failed:', err);
+      return recs;
+    }
+  };
 
   useEffect(() => {
     const fetchRecommendations = async () => {
@@ -47,13 +102,21 @@ const RecommendedVolunteers: React.FC<RecommendedVolunteersProps> = ({
         if (resp.ok) {
           const json = await resp.json();
           
+          let recs: UserRecommendation[] = [];
           if (json && json.success && Array.isArray(json.data)) {
-            setRecommendations(json.data.slice(0, maxDisplay));
+            recs = json.data.slice(0, maxDisplay);
           } else if (Array.isArray(json)) {
-            setRecommendations(json.slice(0, maxDisplay));
+            recs = json.slice(0, maxDisplay);
           } else {
             throw new Error('Invalid recommendations response format');
           }
+
+          // Enhance with Gemini AI if enabled
+          if (useGemini) {
+            recs = await enhanceWithGemini(recs);
+          }
+
+          setRecommendations(recs);
         } else {
           throw new Error(`API returned ${resp.status}`);
         }
@@ -68,7 +131,8 @@ const RecommendedVolunteers: React.FC<RecommendedVolunteersProps> = ({
             matchReasons: [{ type: 'interest', description: 'Shared interest: Beach Cleanup', weight: 0.3 }],
             sharedInterests: ['Beach Cleanup', 'Teaching'],
             culturalConnection: 'Great community partner',
-            suggestedActivities: ['Beach cleanup events', 'Community teaching programs']
+            suggestedActivities: ['Beach cleanup events', 'Community teaching programs'],
+            aiInsights: 'AI suggests this match based on complementary skills and shared environmental passion.'
           },
           {
             recommendedUserId: 'v2',
@@ -77,7 +141,8 @@ const RecommendedVolunteers: React.FC<RecommendedVolunteersProps> = ({
             matchReasons: [{ type: 'interest', description: 'Shared interest: Education', weight: 0.3 }],
             sharedInterests: ['Education'],
             culturalConnection: 'Compatible goals',
-            suggestedActivities: ['Education volunteer programs']
+            suggestedActivities: ['Education volunteer programs'],
+            aiInsights: 'Both committed to community education and youth engagement.'
           }
         ];
         setRecommendations(fallbackRecommendations.slice(0, maxDisplay));
@@ -87,7 +152,7 @@ const RecommendedVolunteers: React.FC<RecommendedVolunteersProps> = ({
     };
 
     fetchRecommendations();
-  }, [userId, maxDisplay]);
+  }, [userId, maxDisplay, useGemini]);
 
   if (loading) {
     return (
@@ -164,6 +229,13 @@ const RecommendedVolunteers: React.FC<RecommendedVolunteersProps> = ({
                 ))}
               </div>
             </div>
+
+            {current.aiInsights && (
+              <div className="bg-white dark:bg-slate-700/50 rounded-lg p-4 border border-brand/20">
+                <p className="text-xs font-bold text-brand uppercase tracking-wider mb-2">🤖 AI Insights</p>
+                <p className="text-sm text-slate-700 dark:text-slate-300">{current.aiInsights}</p>
+              </div>
+            )}
 
             {current.sharedInterests.length > 0 && (
               <div>

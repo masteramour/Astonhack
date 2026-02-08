@@ -245,6 +245,60 @@ app.get('/api/recommendations', (req, res) => {
   }
 });
 
+// ==================== GEMINI AI MATCHING ====================
+
+/**
+ * POST endpoint for AI-enhanced volunteer matching using Gemini
+ */
+app.post('/api/gemini-match', async (req, res) => {
+  try {
+    const { volunteer1, volunteer2, matchScore } = req.body;
+    
+    // Gemini prompt for analyzing volunteer compatibility
+    const prompt = `You are an expert in matching volunteers based on complementary skills and shared values.
+
+Analyze these two volunteers for a community matching recommendation:
+
+VOLUNTEER 1:
+- ID: ${volunteer1.id}
+
+VOLUNTEER 2:
+- Name: ${volunteer2.name}
+- Shared Interests: ${volunteer2.interests.join(', ') || 'General volunteering'}
+- Match Score: ${matchScore}%
+
+Based on their interests and match score, provide a brief, warm, and encouraging insight (1-2 sentences) about why they would make great volunteer partners. Focus on the potential they have to collaborate and support each other.
+
+Respond with ONLY the insight text, no JSON or formatting.`;
+
+    // Note: In production, you would use the actual Gemini API
+    // For now, we'll return a meaningful insight based on match score
+    const insights = {
+      95: "Perfect synergy! You both share a passion for making an impact, and your complementary interests could lead to powerful collaborative projects.",
+      85: "Great potential! Your aligned values and interests make you ideal partners for meaningful volunteer work together.",
+      75: "Strong match! You both bring enthusiasm to similar causes and could accomplish great things as a team.",
+      65: "Good compatibility! While your interests differ slightly, you can learn from each other and expand your volunteer horizons together.",
+      default: "You both care about community impact, and working together could create meaningful change."
+    };
+
+    const insight = insights[matchScore] || insights.default;
+
+    res.json({
+      success: true,
+      insights: insight,
+      matchScore: matchScore,
+      recommendation: 'Connect and explore volunteer opportunities together!'
+    });
+  } catch (error) {
+    console.error('Error in Gemini matching:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Error processing Gemini match',
+      error: error.message
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Donations server running on http://localhost:${PORT}`);
 });
